@@ -10,8 +10,10 @@ namespace SistemaFinanceiro
     public class Agencia
     {
         private int _numero;
-        private string _nome, _telefone;
+        private string _nome, _telefone, _cep;
 
+
+        public Banco banco;
         public Agencia(int numero)
         {
             _numero = numero;
@@ -28,6 +30,15 @@ namespace SistemaFinanceiro
             set
             {
                 _telefone = value;
+            }
+        }
+
+        public string CEP
+        {
+            get => _cep;
+            set
+            {
+                _cep = value;
             }
         }
     }

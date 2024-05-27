@@ -10,6 +10,7 @@ namespace SistemaFinanceiro.Model
     {
         private long _numero;
         private decimal _saldo;
+        private Cliente _titular;
 
         public Agencia agencia;
         public Cliente cliente;
@@ -20,17 +21,21 @@ namespace SistemaFinanceiro.Model
             _numero = numero;
         }
 
-
-
-        public Conta(long numero, decimal saldo)
+        public Conta(long numero, decimal saldo, Cliente titular)
         {
-            _numero = numero;
-            _saldo = saldo;
+            if (titular == null)
+            {
+                throw new ArgumentNullException("O titular da conta não pode ser nulo.");
+            }
 
             if (saldo <= 10)
             {
                 throw new ArgumentException("O saldo inicial deve ser superior a R$10,00");
             }
+
+            _numero = numero;
+            _saldo = saldo;
+            _titular = titular;
         }
 
         public Conta(int numero)
@@ -54,14 +59,16 @@ namespace SistemaFinanceiro.Model
         public void Deposito(decimal valor)
         {
             if (valor > 0)
-            _saldo += valor;
+                _saldo += valor;
         }
 
         public decimal Saque(decimal valor)
         {
-            if (_saldo - valor >= 0)
+
+            decimal imposto = valor + 0.10m;
+            if (_saldo - imposto >= 0)
             {
-                _saldo -= valor;
+                _saldo -= imposto;
                 return _saldo;
             }
             else
@@ -70,6 +77,21 @@ namespace SistemaFinanceiro.Model
             }
 
         }
+
+        public void Transferencia(decimal valor, Conta contaDestino)
+        {
+            if (valor <= 0)
+            {
+                throw new ArgumentException("A transferencia tem que ser maior que zero");
+            }
+
+            if (Saldo < valor)
+            {
+                throw new ArgumentException("Impossivel realizar a transferencia! O saldo ficará negativo");
+            }
+            if (Saldo > valor)
+            _saldo -= valor;
+            contaDestino._saldo += valor;
+        }
     }
-    
 }

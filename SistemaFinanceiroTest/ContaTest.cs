@@ -1,3 +1,4 @@
+Ôªøusing SistemaFinanceiro;
 using SistemaFinanceiro.Model;
 
 namespace SistemaFinanceiroTest
@@ -12,12 +13,13 @@ namespace SistemaFinanceiroTest
             decimal saldoInicial = 1000;
             decimal valorDeposito = 1000;
             decimal saldoFinal = 2000;
-            Conta conta1 = new Conta(123, saldoInicial);
+            Cliente cliente1 = new Cliente("Arthur", "12345678900", 2003);
+            Conta conta1 = new Conta(123, saldoInicial, cliente1);
 
-            //aÁ„o
+            //a√ß√£o
             conta1.Deposito(valorDeposito);
 
-            //verificaÁ„o
+            //verifica√ß√£o
             Assert.AreEqual(saldoFinal, conta1.Saldo);
         }
 
@@ -27,13 +29,14 @@ namespace SistemaFinanceiroTest
             //cenario
             decimal saldoInicial = 1000;
             decimal valorSaque = 500;
-            decimal saldoFinal = 500;
-            Conta conta1 = new Conta(123, saldoInicial);
+            decimal saldoFinal = 499.90m;
+            Cliente cliente1 = new Cliente("Arthur", "12345678900", 2003);
+            Conta conta1 = new Conta(123, saldoInicial, cliente1);
 
-            //aÁ„o
+            //a√ß√£o
             conta1.Saque(valorSaque);
 
-            //verificaÁ„o
+            //verifica√ß√£o
             Assert.AreEqual(saldoFinal, conta1.Saldo);
         }
 
@@ -43,10 +46,30 @@ namespace SistemaFinanceiroTest
             //cenario
             decimal saldoInicial = 1000;
             decimal valorSaque = 1500;
-            Conta conta1 = new Conta(123, saldoInicial);
+            Cliente cliente1 = new Cliente("Arthur", "12345678900", 2003);
+            Conta conta1 = new Conta(123, saldoInicial, cliente1);
 
-            //verificaÁ„o
+            //verifica√ß√£o
             Assert.ThrowsException<ArgumentException>(() => conta1.Saque(valorSaque));
+        }
+
+        [TestMethod]
+
+        public void TransferenciaTest()
+        {
+            // cenario
+            Cliente cliente1 = new Cliente("Arthur", "12345678900", 2003);
+            Cliente cliente2 = new Cliente("Kamanda", "98765432100", 2001);
+            Conta conta1 = new Conta(123, 200, cliente1);
+            Conta conta2 = new Conta(456, 100, cliente2);
+            decimal valorTransferencia = 50;
+
+            // A√ß√£o
+            conta1.Transferencia(valorTransferencia, conta2);
+
+            // Verifica√ß√£o
+            Assert.AreEqual(150, conta1.Saldo);
+            Assert.AreEqual(150, conta2.Saldo);
         }
     }
 }

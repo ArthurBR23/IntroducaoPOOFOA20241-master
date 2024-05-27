@@ -22,10 +22,13 @@ namespace SistemaFinanceiro
             {
                 throw new ArgumentException("Nome inválido");
             }
+            else if (string.IsNullOrEmpty(cpf))
+            {
+                throw new ArgumentException("CPF inválido");
+            }
+            
         }
-
       
-
         public string Nome
         {
             get => _nome;
