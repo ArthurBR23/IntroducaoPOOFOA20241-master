@@ -21,6 +21,8 @@ namespace SistemaFinanceiro.Model
             _numero = numero;
         }
 
+        public Cliente Titular { get; private set; }
+
         public Conta(long numero, decimal saldo, Cliente titular)
         {
             if (titular == null)
